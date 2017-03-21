@@ -33,11 +33,10 @@
     CGContextAddLineToPoint(context,rect.size.width - defaultX, rect.size.height - defalutY);
     CGContextStrokePath(context);
     
-    [self drawXAndVirtualLine:context];
-    [self createY];
+    [self drawXYAndVirtualLine:context];
 }
 
--(void)drawXAndVirtualLine:(CGContextRef)context
+-(void)drawXYAndVirtualLine:(CGContextRef)context
 {
     for (int i = 0; i<self.XArray.count; i++) {
         CGFloat width = (self.frame.size.width - defaultX*2)/self.XArray.count;
@@ -69,10 +68,8 @@
             CGContextStrokePath(context);
         }
     }
-}
-
--(void)createY
-{
+    
+    //绘制Y轴
     for (int i = 0; i<self.YArray.count; i++) {
         CGFloat width = (self.frame.size.height - defalutY*2)/self.XArray.count;
         UILabel * xLab = [[UILabel alloc]initWithFrame:CGRectMake(0,self.frame.size.height-defalutY*2-width*i,width,defalutY)];
@@ -83,4 +80,21 @@
     }
 }
 
+-(void)drawLineAndPointToGraph:(CGContextRef)context
+{
+    CGContextSetStrokeColorWithColor(context,[UIColor blackColor].CGColor);
+    CGContextSetLineWidth(context, 1.0);
+    
+    for (int i = 0; i<self.pointArray.count-1; i++) {
+        NSValue* valueStart = self.pointArray[i];
+        CGPoint pointStart = [valueStart CGPointValue];
+        NSValue* valueEnd = self.pointArray[i+1];
+        CGPoint pointEnd = [valueEnd CGPointValue];
+        
+        CGContextMoveToPoint(context, pointStart.x, pointStart.y);
+        CGContextAddLineToPoint(context, pointEnd.x, pointEnd.y);
+        CGContextStrokePath(context);
+    }
+    
+}
 @end
