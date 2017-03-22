@@ -18,7 +18,9 @@
     [super viewDidLoad];
     LineGraph* lineGraphView = [[LineGraph alloc]initWithFrame:CGRectMake(20, 100, 300, 200)];
     lineGraphView.XArray = @[@"0",@"1",@"2",@"3",@"4"];
-    lineGraphView.YArray = @[@"0.2",@"0.4",@"0.6",@"0.8",@"1.0"];
+    lineGraphView.YArray = @[@"0",@"0.2",@"0.4",@"0.6",@"0.8",@"1.0"];
+    lineGraphView.MaxX = 4.0f;
+    lineGraphView.MaxY = 1.0f;
     lineGraphView.lineColor = [UIColor redColor];
     lineGraphView.pointArray = @[[NSValue valueWithCGPoint:CGPointMake(0, 0.7)],[NSValue valueWithCGPoint:CGPointMake(1, 0.3)],[NSValue valueWithCGPoint:CGPointMake(2, 0.5)],[NSValue valueWithCGPoint:CGPointMake(3, 0.8)],[NSValue valueWithCGPoint:CGPointMake(4, 0.3)]];
     [self.view addSubview:lineGraphView];

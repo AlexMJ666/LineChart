@@ -33,11 +33,13 @@
     CGContextAddLineToPoint(context,rect.size.width - defaultX, rect.size.height - defalutY);
     CGContextStrokePath(context);
     
-    [self drawXYAndVirtualLine:context];
+    [self drawXYAndVirtualLine];
+    [self drawLineAndPointToGraph];
 }
 
--(void)drawXYAndVirtualLine:(CGContextRef)context
+-(void)drawXYAndVirtualLine
 {
+    CGContextRef context = UIGraphicsGetCurrentContext();
     for (int i = 0; i<self.XArray.count; i++) {
         CGFloat width = (self.frame.size.width - defaultX*2)/self.XArray.count;
         UILabel * xLab = [[UILabel alloc]initWithFrame:CGRectMake(width*i+defaultX,self.frame.size.height-defalutY,width,defalutY)];
@@ -80,21 +82,41 @@
     }
 }
 
--(void)drawLineAndPointToGraph:(CGContextRef)context
+-(void)drawLineAndPointToGraph
 {
+    CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetStrokeColorWithColor(context,[UIColor blackColor].CGColor);
     CGContextSetLineWidth(context, 1.0);
     
-    for (int i = 0; i<self.pointArray.count-1; i++) {
+    //创建贝塞尔曲线对象
+    UIBezierPath *currenPath = [UIBezierPath bezierPath];
+    currenPath.lineCapStyle = kCGLineCapRound;//拐弯处为弧线
+    currenPath.lineJoinStyle = kCGLineJoinRound;
+    
+    for (int i = 0; i<self.pointArray.count; i++) {
         NSValue* valueStart = self.pointArray[i];
         CGPoint pointStart = [valueStart CGPointValue];
-        NSValue* valueEnd = self.pointArray[i+1];
-        CGPoint pointEnd = [valueEnd CGPointValue];
+//        NSValue* valueEnd = self.pointArray[i+1];
+//        CGPoint pointEnd = [valueEnd CGPointValue];
         
-        CGContextMoveToPoint(context, pointStart.x, pointStart.y);
-        CGContextAddLineToPoint(context, pointEnd.x, pointEnd.y);
-        CGContextStrokePath(context);
+//        CGPoint p = CGPointMake(pointStart.x/_MaxX*(self.frame.size.width-2*defaultX), pointStart.y/_MaxY*(self.frame.size.height-2*defalutY));
+//        CGContextMoveToPoint(context, pointStart.x/_MaxX*(self.frame.size.width-2*defaultX), pointStart.y/_MaxY*(self.frame.size.height-2*defalutY));
+//        CGContextAddLineToPoint(context,  pointEnd.x/_MaxX*(self.frame.size.width-2*defaultX), pointEnd.y/_MaxY*(self.frame.size.height-2*defalutY));
+//        CGContextStrokePath(context);
+        // 设置起点
+        if (i == 0) {
+            [currenPath moveToPoint:CGPointMake(pointStart.x/_MaxX*self.frame.size.width+defaultX, pointStart.y/_MaxY*self.frame.size.height+defalutY)];
+        }
+        else
+        {
+            //把点加入到路径里面
+            [currenPath addLineToPoint:CGPointMake(pointStart.x/_MaxX*self.frame.size.width+defaultX, pointStart.y/_MaxY*self.frame.size.height+defalutY)];
+        }
+        
+        
+
     }
-    
+    //画线
+    [currenPath stroke];
 }
 @end
