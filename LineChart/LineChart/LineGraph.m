@@ -43,7 +43,9 @@
     for (int i = 0; i<self.XArray.count; i++) {
         CGFloat width = (self.frame.size.width - defaultX*2)/self.XArray.count;
         UILabel * xLab = [[UILabel alloc]initWithFrame:CGRectMake(width*i+defaultX,self.frame.size.height-defalutY,width,defalutY)];
+        xLab.center = CGPointMake(width*i+defaultX, xLab.center.y);
         xLab.text = self.XArray[i];
+        xLab.textAlignment = NSTextAlignmentCenter;
         xLab.textColor = [UIColor blackColor];
         xLab.font = [UIFont systemFontOfSize:10];
         [self addSubview:xLab];
@@ -58,14 +60,14 @@
             // 开始绘制
             CGContextBeginPath(context);
             // 设置虚线绘制起点
-            CGContextMoveToPoint(context, xLab.frame.origin.x, self.frame.size.height-defalutY);
+            CGContextMoveToPoint(context, xLab.center.x, self.frame.size.height-defalutY);
             // lengths的值｛10,10｝表示先绘制10个点，再跳过10个点，如此反复
             CGFloat lengths[] = {5,5};
             // 虚线的起始点
             CGContextSetLineDash(context, 0, lengths,2);
             // 绘制虚线的终点
             NSLog(@"%lf",self.frame.size.height);
-            CGContextAddLineToPoint(context, xLab.frame.origin.x,defalutY);
+            CGContextAddLineToPoint(context, xLab.center.x,defalutY);
             // 绘制
             CGContextStrokePath(context);
         }
@@ -76,8 +78,10 @@
         CGFloat width = (self.frame.size.height - defalutY*2)/self.XArray.count;
         UILabel * xLab = [[UILabel alloc]initWithFrame:CGRectMake(0,self.frame.size.height-defalutY*2-width*i,width,defalutY)];
         xLab.text = self.YArray[i];
+        xLab.textAlignment = NSTextAlignmentCenter;
         xLab.textColor = [UIColor blackColor];
         xLab.font = [UIFont systemFontOfSize:10];
+        xLab.center = CGPointMake(xLab.frame.origin.x, self.frame.size.height-defalutY-width*i);
         [self addSubview:xLab];
     }
 }
@@ -99,18 +103,18 @@
 //        NSValue* valueEnd = self.pointArray[i+1];
 //        CGPoint pointEnd = [valueEnd CGPointValue];
         
-//        CGPoint p = CGPointMake(pointStart.x/_MaxX*(self.frame.size.width-2*defaultX), pointStart.y/_MaxY*(self.frame.size.height-2*defalutY));
+        CGPoint p = CGPointMake(pointStart.x/_MaxX*(self.frame.size.width-2*defaultX), pointStart.y/_MaxY*(self.frame.size.height-2*defalutY));
 //        CGContextMoveToPoint(context, pointStart.x/_MaxX*(self.frame.size.width-2*defaultX), pointStart.y/_MaxY*(self.frame.size.height-2*defalutY));
 //        CGContextAddLineToPoint(context,  pointEnd.x/_MaxX*(self.frame.size.width-2*defaultX), pointEnd.y/_MaxY*(self.frame.size.height-2*defalutY));
 //        CGContextStrokePath(context);
         // 设置起点
         if (i == 0) {
-            [currenPath moveToPoint:CGPointMake(pointStart.x/_MaxX*self.frame.size.width+defaultX, pointStart.y/_MaxY*self.frame.size.height+defalutY)];
+            [currenPath moveToPoint:CGPointMake(pointStart.x/_MaxX*self.frame.size.width+defaultX,self.frame.size.height - pointStart.y/_MaxY*(self.frame.size.height-defalutY))];
         }
         else
         {
             //把点加入到路径里面
-            [currenPath addLineToPoint:CGPointMake(pointStart.x/_MaxX*self.frame.size.width+defaultX, pointStart.y/_MaxY*self.frame.size.height+defalutY)];
+            [currenPath addLineToPoint:CGPointMake(pointStart.x/_MaxX*self.frame.size.width+defaultX,self.frame.size.height -  pointStart.y/_MaxY*self.frame.size.height - defalutY)];
         }
         
         
