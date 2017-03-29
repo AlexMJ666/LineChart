@@ -50,7 +50,6 @@
 
 -(void)drawXYAndVirtualLine
 {
-    CGContextRef context = UIGraphicsGetCurrentContext();
     for (int i = 0; i<self.XArray.count; i++) {
         CGFloat width = (self.frame.size.width - defaultX*2)/self.XArray.count;
         CGFloat Xnum = [self.XArray[i] floatValue];
@@ -66,68 +65,49 @@
         [self addSubview:xLab];
         
         NSLog(@"%lf",xLab.center.x);
-        if (i!=0) {
-            // 设置线条的样式
-            CGContextSetLineCap(context, kCGLineCapRound);
-            // 绘制线的宽度
-            CGContextSetLineWidth(context, 0.2f);
-            // 线的颜色
-            CGContextSetStrokeColorWithColor(context, [UIColor grayColor].CGColor);
-            // 开始绘制
-            CGContextBeginPath(context);
-            // 设置虚线绘制起点
-            CGContextMoveToPoint(context, xLab.center.x, self.frame.size.height-defalutY);
-            // lengths的值｛10,10｝表示先绘制10个点，再跳过10个点，如此反复
-            CGFloat lengths[] = {5,5};
-            // 虚线的起始点
-            CGContextSetLineDash(context, 0, lengths,2);
-            // 绘制虚线的终点
-            NSLog(@"%lf",self.frame.size.height);
-            CGContextAddLineToPoint(context, xLab.center.x,defalutY);
-            // 绘制
-            CGContextStrokePath(context);
-        }
+        [self drawVirtualLine:xLab andStartPt:CGPointMake(xLab.center.x, self.frame.size.height-defalutY) andEndPt:CGPointMake(xLab.center.x,defalutY)];
     }
     
     //绘制Y轴
     for (int i = 0; i<self.YArray.count; i++) {
         CGFloat width = (self.frame.size.height - defalutY*2)/self.XArray.count;
          CGFloat Ynum = [self.YArray[i] floatValue];
-        UILabel * xLab = [[UILabel alloc]initWithFrame:CGRectMake(0,(Ynum/_MaxY)*(self.frame.size.height-2*defalutY),width,defalutY)];
+        UILabel * yLab = [[UILabel alloc]initWithFrame:CGRectMake(0,(Ynum/_MaxY)*(self.frame.size.height-2*defalutY),width,defalutY)];
         
         if (i != 0) {
-            xLab.text = self.YArray[i];
+            yLab.text = self.YArray[i];
         }
-        xLab.textAlignment = NSTextAlignmentCenter;
-        xLab.textColor = [UIColor blackColor];
-        xLab.font = [UIFont systemFontOfSize:10];
-        xLab.center = CGPointMake(xLab.frame.origin.x, self.frame.size.height-defalutY-width*i);
-        [self addSubview:xLab];
-        
-        if (i!=0) {
-            // 设置线条的样式
-            CGContextSetLineCap(context, kCGLineCapRound);
-            // 绘制线的宽度
-            CGContextSetLineWidth(context, 0.2f);
-            // 线的颜色
-            CGContextSetStrokeColorWithColor(context, [UIColor grayColor].CGColor);
-            // 开始绘制
-            CGContextBeginPath(context);
-            // 设置虚线绘制起点
-            CGContextMoveToPoint(context, defaultX, xLab.center.y);
-            // lengths的值｛10,10｝表示先绘制10个点，再跳过10个点，如此反复
-            CGFloat lengths[] = {5,5};
-            // 虚线的起始点
-            CGContextSetLineDash(context, 0, lengths,2);
-            // 绘制虚线的终点
-            NSLog(@"%lf",self.frame.size.height);
-            CGContextAddLineToPoint(context, self.frame.size.width-defaultX,xLab.center.y);
-            // 绘制
-            CGContextStrokePath(context);
-        }
-
-        
+        yLab.textAlignment = NSTextAlignmentCenter;
+        yLab.textColor = [UIColor blackColor];
+        yLab.font = [UIFont systemFontOfSize:10];
+        yLab.center = CGPointMake(yLab.frame.origin.x, self.frame.size.height-defalutY-width*i);
+        [self addSubview:yLab];
+        [self drawVirtualLine:yLab andStartPt:CGPointMake(defaultX, yLab.center.y) andEndPt:CGPointMake(self.frame.size.width-defaultX,yLab.center.y)];
     }
+}
+
+-(void)drawVirtualLine:(UILabel*)lab andStartPt:(CGPoint)pStart andEndPt:(CGPoint)pEnd
+{
+     CGContextRef context = UIGraphicsGetCurrentContext();
+    // 设置线条的样式
+    CGContextSetLineCap(context, kCGLineCapRound);
+    // 绘制线的宽度
+    CGContextSetLineWidth(context, 0.2f);
+    // 线的颜色
+    CGContextSetStrokeColorWithColor(context, [UIColor grayColor].CGColor);
+    // 开始绘制
+    CGContextBeginPath(context);
+    // 设置虚线绘制起点
+    CGContextMoveToPoint(context, pStart.x, pStart.y);
+    // lengths的值｛10,10｝表示先绘制10个点，再跳过10个点，如此反复
+    CGFloat lengths[] = {5,5};
+    // 虚线的起始点
+    CGContextSetLineDash(context, 0, lengths,2);
+    // 绘制虚线的终点
+    NSLog(@"%lf",self.frame.size.height);
+    CGContextAddLineToPoint(context, pEnd.x,pEnd.y);
+    // 绘制
+    CGContextStrokePath(context);
 }
 
 -(void)drawLineAndPointToGraph
