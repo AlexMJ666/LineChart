@@ -22,7 +22,7 @@
     lineGraphView.MaxX = 4.0f;
     lineGraphView.MaxY = 1.0f;
     lineGraphView.lineColor = [UIColor redColor];
-    lineGraphView.pointArray = @[[NSValue valueWithCGPoint:CGPointMake(0, 0.7)],[NSValue valueWithCGPoint:CGPointMake(1, 0.3)],[NSValue valueWithCGPoint:CGPointMake(2, 0.5)],[NSValue valueWithCGPoint:CGPointMake(3, 0.8)],[NSValue valueWithCGPoint:CGPointMake(4, 0.3)]];
+    lineGraphView.pointArray = @[[NSValue valueWithCGPoint:CGPointMake(0, 0.7)],[NSValue valueWithCGPoint:CGPointMake(1.3, 0.3)],[NSValue valueWithCGPoint:CGPointMake(1.7, 0.5)],[NSValue valueWithCGPoint:CGPointMake(1.9, 0.8)],[NSValue valueWithCGPoint:CGPointMake(2.4, 0.3)],[NSValue valueWithCGPoint:CGPointMake(3.3, 0.44)],[NSValue valueWithCGPoint:CGPointMake(3.9, 0.3)]];
     [self.view addSubview:lineGraphView];
     // Do any additional setup after loading the view, typically from a nib.
 }

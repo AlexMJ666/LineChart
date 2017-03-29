@@ -10,6 +10,7 @@
 
 #define defaultX    18
 #define defalutY    18
+#define defaulArrowW 5
 @implementation LineGraph
 
 -(instancetype)initWithFrame:(CGRect)frame
@@ -31,6 +32,16 @@
     CGContextMoveToPoint(context, defaultX, defalutY);
     CGContextAddLineToPoint(context, defaultX, rect.size.height - defalutY);
     CGContextAddLineToPoint(context,rect.size.width - defaultX, rect.size.height - defalutY);
+    
+    //X轴箭头
+    CGContextMoveToPoint(context, rect.size.width - defaultX - defaulArrowW, rect.size.height - defalutY - defaulArrowW);
+    CGContextAddLineToPoint(context,rect.size.width - defaultX, rect.size.height - defalutY);
+    CGContextAddLineToPoint(context,rect.size.width - defaultX - defaulArrowW, rect.size.height - defalutY + defaulArrowW);
+    
+    //Y轴箭头
+    CGContextMoveToPoint(context, defaultX - defaulArrowW, defalutY + defaulArrowW);
+    CGContextAddLineToPoint(context,defaultX, defalutY);
+    CGContextAddLineToPoint(context,defaultX + defaulArrowW, defalutY + defaulArrowW);
     CGContextStrokePath(context);
     
     [self drawXYAndVirtualLine];
@@ -59,7 +70,7 @@
             // 设置线条的样式
             CGContextSetLineCap(context, kCGLineCapRound);
             // 绘制线的宽度
-            CGContextSetLineWidth(context, 1.0);
+            CGContextSetLineWidth(context, 0.2f);
             // 线的颜色
             CGContextSetStrokeColorWithColor(context, [UIColor grayColor].CGColor);
             // 开始绘制
@@ -97,7 +108,7 @@
             // 设置线条的样式
             CGContextSetLineCap(context, kCGLineCapRound);
             // 绘制线的宽度
-            CGContextSetLineWidth(context, 1.0);
+            CGContextSetLineWidth(context, 0.2f);
             // 线的颜色
             CGContextSetStrokeColorWithColor(context, [UIColor grayColor].CGColor);
             // 开始绘制
@@ -137,12 +148,12 @@
         CGPoint pointStart = [valueStart CGPointValue];
         CGPoint p = CGPointMake((pointStart.x/_MaxX)*(self.frame.size.width-2*defaultX), (pointStart.y/_MaxY)*(self.frame.size.height-2*defalutY));
         if (i == 0) {
-            [currenPath moveToPoint:CGPointMake(p.x+defaultX,self.frame.size.height-p.y)];
+            [currenPath moveToPoint:CGPointMake(p.x+defaultX,self.frame.size.height-p.y-defalutY)];
         }
         else
         {
             //把点加入到路径里面
-            [currenPath addLineToPoint:CGPointMake(p.x,self.frame.size.height-p.y)];
+            [currenPath addLineToPoint:CGPointMake(p.x,self.frame.size.height-p.y-defalutY)];
         }
     }
     //画线
