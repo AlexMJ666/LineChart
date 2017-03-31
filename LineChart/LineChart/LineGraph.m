@@ -54,7 +54,7 @@
         CGFloat width = (self.frame.size.width - defaultX*2)/self.XArray.count;
         CGFloat Xnum = [self.XArray[i] floatValue];
         UILabel * xLab = [[UILabel alloc]initWithFrame:CGRectMake(width*i+defaultX,self.frame.size.height-defalutY,width,defalutY)];
-        xLab.center = CGPointMake((Xnum/_MaxX)*(self.frame.size.width-2*defaultX), xLab.center.y);
+        xLab.center = CGPointMake((Xnum/_MaxX)*(self.frame.size.width-2*defaultX)+defaultX, xLab.center.y);
         
         if (i != 0) {
             xLab.text = self.XArray[i];
@@ -72,7 +72,7 @@
     for (int i = 0; i<self.YArray.count; i++) {
         CGFloat width = (self.frame.size.height - defalutY*2)/self.XArray.count;
          CGFloat Ynum = [self.YArray[i] floatValue];
-        UILabel * yLab = [[UILabel alloc]initWithFrame:CGRectMake(0,(Ynum/_MaxY)*(self.frame.size.height-2*defalutY),width,defalutY)];
+        UILabel * yLab = [[UILabel alloc]initWithFrame:CGRectMake(0,(Ynum/_MaxY)*(self.frame.size.height-2*defalutY)+defalutY,width,defalutY)];
         
         if (i != 0) {
             yLab.text = self.YArray[i];
@@ -133,7 +133,7 @@
         else
         {
             //把点加入到路径里面
-            [currenPath addLineToPoint:CGPointMake(p.x,self.frame.size.height-p.y-defalutY)];
+            [currenPath addLineToPoint:CGPointMake(p.x+defaultX,self.frame.size.height-p.y-defalutY)];
         }
     }
     //画线
