@@ -11,6 +11,7 @@
 #define defaultX    28
 #define defalutY    28
 #define defaulArrowW 5
+#define NameWidth   60
 @implementation LineGraph
 
 -(instancetype)initWithFrame:(CGRect)frame
@@ -89,11 +90,25 @@
 -(void)drawLineName
 {
     for (int i = 0; i < self.totalBrokenArray.count; i++) {
+        BrokenLine* bkLin = self.totalBrokenArray[i];
         LineNameView* nameView = [LineNameView viewFromNIB];
-        nameView.frame = CGRectMake(0, 0, 50, 28);
-        nameView.colorView.backgroundColor = [UIColor redColor];
-        nameView.nameLab.text = @"111";
+        nameView.colorView.backgroundColor = bkLin.lineColor;
+        nameView.nameLab.text = bkLin.lineName;
         [self addSubview:nameView];
+        
+        switch (self.namePosition) {
+            case LineNamePositionUpleft:
+                nameView.frame = CGRectMake(defaultX+NameWidth*i, 0, NameWidth, defalutY);
+                break;
+            case LineNamePositionUpRight:
+                nameView.frame = CGRectMake(defaultX+NameWidth*i, 0, NameWidth, defalutY);
+                break;
+            case LineNamePositionCenter:
+                nameView.frame = CGRectMake(defaultX+NameWidth*i, 0, NameWidth, defalutY);
+                break;
+            default:
+                break;
+        }
     }
 }
 
