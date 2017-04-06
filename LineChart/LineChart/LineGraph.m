@@ -45,7 +45,6 @@
     CGContextStrokePath(context);
     
     [self drawXYAndVirtualLine];
-    [self drawLineAndPointToGraph];
 }
 
 -(void)drawXYAndVirtualLine
@@ -84,6 +83,18 @@
         [self addSubview:yLab];
         [self drawVirtualLine:yLab andStartPt:CGPointMake(defaultX, yLab.center.y) andEndPt:CGPointMake(self.frame.size.width-defaultX,yLab.center.y)];
     }
+    [self drawLineName];
+}
+
+-(void)drawLineName
+{
+    for (int i = 0; i < self.totalBrokenArray.count; i++) {
+        LineNameView* nameView = [LineNameView viewFromNIB];
+        nameView.frame = CGRectMake(0, 0, 50, 28);
+        nameView.colorView.backgroundColor = [UIColor redColor];
+        nameView.nameLab.text = @"111";
+        [self addSubview:nameView];
+    }
 }
 
 -(void)drawVirtualLine:(UILabel*)lab andStartPt:(CGPoint)pStart andEndPt:(CGPoint)pEnd
@@ -108,21 +119,15 @@
     CGContextAddLineToPoint(context, pEnd.x,pEnd.y);
     // 绘制
     CGContextStrokePath(context);
-}
-
--(void)drawLineAndPointToGraph
-{
-    for (int j = 0; j<self.brokenArray.count; j++) {
-        NSArray* arr = self.brokenArray[j];
-        BrokenLine* brokenLine = [[BrokenLine alloc]init];
-        [brokenLine drawBrokenLine:arr andFrame:self.frame andMaxX:_MaxX andMaxY:_MaxY];
+    
+    for (int i = 0; i < self.totalBrokenArray.count; i++) {
+        BrokenLine* bkLin = self.totalBrokenArray[i];
+        [self drawBrokenLine:self.frame andMaxX:_MaxX andMaxY:_MaxY andBkLin:bkLin andptArr:[bkLin drawBrokenLine:self.frame andMaxX:_MaxX andMaxY:_MaxY]];
     }
 }
-@end
 
-@implementation BrokenLine
-
--(void)drawBrokenLine:(NSArray*)ptArr andFrame:(CGRect)lineFrame andMaxX:(CGFloat)maxX andMaxY:(CGFloat)maxY
+-(void)drawBrokenLine:(CGRect)lineFrame andMaxX:(CGFloat)maxX andMaxY:(CGFloat)maxY
+             andBkLin:(BrokenLine*)bkLin andptArr:(NSMutableArray*)ptArr
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
     //创建贝塞尔曲线对象
@@ -130,26 +135,70 @@
     currenPath.lineCapStyle = kCGLineCapRound;//拐弯处为弧线
     currenPath.lineJoinStyle = kCGLineCapRound;
     currenPath.lineWidth = 0.3f;
-    UIColor *color = [UIColor blueColor];
+    UIColor *color = bkLin.lineColor;
     [color set];
     CGFloat lengths[] = {10,0};
     CGContextSetLineDash(context, 0, lengths,2);
     
-    for (int i = 0; i<ptArr.count; i++) {
-        NSValue* valueStart = ptArr[i];
+    for (int i = 0; i<bkLin.brokenArray.count; i++) {
+        NSValue* valueStart = bkLin.brokenArray[i];
         CGPoint pointStart = [valueStart CGPointValue];
-        CGPoint p = CGPointMake((pointStart.x/maxX)*(lineFrame.size.width-2*defaultX), (pointStart.y/maxY)*(lineFrame.size.height-2*defalutY));
         if (i == 0) {
-            [currenPath moveToPoint:CGPointMake(p.x+defaultX,lineFrame.size.height-p.y-defalutY)];
+            [currenPath moveToPoint:CGPointMake(pointStart.x,pointStart.y)];
         }
         else
         {
             //把点加入到路径里面
-            [currenPath addLineToPoint:CGPointMake(p.x+defaultX,lineFrame.size.height-p.y-defalutY)];
+            [currenPath addLineToPoint:CGPointMake(pointStart.x,pointStart.y)];
         }
     }
     //画线
     [currenPath stroke];
 }
 
+-(void)addBrokenLine:(BrokenLine*)bkLin
+{
+    [self.totalBrokenArray addObject:bkLin];
+    bkLin.brokenArray = [bkLin drawBrokenLine:self.frame andMaxX:_MaxX andMaxY:_MaxY];
+}
+
+-(NSMutableArray*)totalBrokenArray
+{
+    if (!_totalBrokenArray) {
+        _totalBrokenArray = [NSMutableArray new];
+    }
+    return _totalBrokenArray;
+}
+@end
+
+@implementation BrokenLine
+
+-(NSMutableArray*)drawBrokenLine:(CGRect)lineFrame andMaxX:(CGFloat)maxX andMaxY:(CGFloat)maxY
+{
+    NSMutableArray* positionArr = [NSMutableArray new];
+    for (int i = 0; i<self.brokenArray.count; i++) {
+        NSValue* valueStart = self.brokenArray[i];
+        CGPoint pointStart = [valueStart CGPointValue];
+        CGPoint p = CGPointMake((pointStart.x/maxX)*(lineFrame.size.width-2*defaultX), (pointStart.y/maxY)*(lineFrame.size.height-2*defalutY));
+        if (i == 0) {
+            [positionArr addObject:[NSValue valueWithCGPoint:CGPointMake(p.x+defaultX,lineFrame.size.height-p.y-defalutY)]];
+        }
+        else
+        {
+            //把点加入到路径里面
+            [positionArr addObject:[NSValue valueWithCGPoint:CGPointMake(p.x+defaultX,lineFrame.size.height-p.y-defalutY)]];
+        }
+    }
+    return positionArr;
+}
+@end
+@implementation LineNameView
+// Convenience Method
++ (instancetype)viewFromNIB {
+    NSArray *views = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:nil options:nil];
+    return views[0];
+}
+- (void)awakeFromNib {
+    [super awakeFromNib];
+}
 @end

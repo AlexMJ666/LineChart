@@ -16,7 +16,7 @@
 		5315F47B1E7F86D3009C2C20 /* LineChartTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5315F47A1E7F86D3009C2C20 /* LineChartTests.m */; };
 		5315F4861E7F86D3009C2C20 /* LineChartUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5315F4851E7F86D3009C2C20 /* LineChartUITests.m */; };
 		5315F4951E7F8732009C2C20 /* LineGraph.m in Sources */ = {isa = PBXBuildFile; fileRef = 5315F4941E7F8732009C2C20 /* LineGraph.m */; };
-		53D343331E95D6CD00B035FD /* LineGraphModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53D343321E95D6CD00B035FD /* LineGraphModel.m */; };
+		53D343351E961C0100B035FD /* LineNameView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53D343341E961C0100B035FD /* LineNameView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,8 +55,7 @@
 		5315F4871E7F86D3009C2C20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5315F4931E7F8732009C2C20 /* LineGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineGraph.h; sourceTree = "<group>"; };
 		5315F4941E7F8732009C2C20 /* LineGraph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineGraph.m; sourceTree = "<group>"; };
-		53D343311E95D6CD00B035FD /* LineGraphModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineGraphModel.h; sourceTree = "<group>"; };
-		53D343321E95D6CD00B035FD /* LineGraphModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineGraphModel.m; sourceTree = "<group>"; };
+		53D343341E961C0100B035FD /* LineNameView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LineNameView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,8 +110,7 @@
 				5315F4671E7F86D3009C2C20 /* ViewController.m */,
 				5315F4931E7F8732009C2C20 /* LineGraph.h */,
 				5315F4941E7F8732009C2C20 /* LineGraph.m */,
-				53D343311E95D6CD00B035FD /* LineGraphModel.h */,
-				53D343321E95D6CD00B035FD /* LineGraphModel.m */,
+				53D343341E961C0100B035FD /* LineNameView.xib */,
 				5315F4601E7F86D3009C2C20 /* Supporting Files */,
 			);
 			path = LineChart;
@@ -257,6 +255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5315F4701E7F86D3009C2C20 /* LaunchScreen.storyboard in Resources */,
+				53D343351E961C0100B035FD /* LineNameView.xib in Resources */,
 				5315F46D1E7F86D3009C2C20 /* Assets.xcassets in Resources */,
 				5315F46B1E7F86D3009C2C20 /* Main.storyboard in Resources */,
 			);
@@ -283,7 +282,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53D343331E95D6CD00B035FD /* LineGraphModel.m in Sources */,
 				5315F4951E7F8732009C2C20 /* LineGraph.m in Sources */,
 				5315F4681E7F86D3009C2C20 /* ViewController.m in Sources */,
 				5315F4651E7F86D3009C2C20 /* AppDelegate.m in Sources */,
