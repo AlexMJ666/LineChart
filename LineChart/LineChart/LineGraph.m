@@ -8,8 +8,8 @@
 
 #import "LineGraph.h"
 
-#define defaultX    18
-#define defalutY    18
+#define defaultX    28
+#define defalutY    28
 #define defaulArrowW 5
 @implementation LineGraph
 
@@ -28,7 +28,7 @@
     // Drawing code
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 1.0);
-    CGContextSetStrokeColorWithColor(context,[UIColor redColor].CGColor);
+    CGContextSetStrokeColorWithColor(context,self.XYlineColor.CGColor);
     CGContextMoveToPoint(context, defaultX, defalutY);
     CGContextAddLineToPoint(context, defaultX, rect.size.height - defalutY);
     CGContextAddLineToPoint(context,rect.size.width - defaultX, rect.size.height - defalutY);
@@ -70,8 +70,8 @@
     
     //绘制Y轴
     for (int i = 0; i<self.YArray.count; i++) {
-        CGFloat width = (self.frame.size.height - defalutY*2)/self.XArray.count;
-         CGFloat Ynum = [self.YArray[i] floatValue];
+        CGFloat width = (self.frame.size.height - defalutY*2)/self.YArray.count;
+        CGFloat Ynum = [self.YArray[i] floatValue];
         UILabel * yLab = [[UILabel alloc]initWithFrame:CGRectMake(0,(Ynum/_MaxY)*(self.frame.size.height-2*defalutY)+defalutY,width,defalutY)];
         
         if (i != 0) {
@@ -80,7 +80,7 @@
         yLab.textAlignment = NSTextAlignmentCenter;
         yLab.textColor = [UIColor blackColor];
         yLab.font = [UIFont systemFontOfSize:10];
-        yLab.center = CGPointMake(yLab.frame.origin.x, self.frame.size.height-defalutY-width*i);
+        yLab.center = CGPointMake(yLab.frame.size.width/2,(self.frame.size.height-2*defalutY) - (Ynum/_MaxY)*(self.frame.size.height-2*defalutY)+defalutY);
         [self addSubview:yLab];
         [self drawVirtualLine:yLab andStartPt:CGPointMake(defaultX, yLab.center.y) andEndPt:CGPointMake(self.frame.size.width-defaultX,yLab.center.y)];
     }
@@ -112,31 +112,44 @@
 
 -(void)drawLineAndPointToGraph
 {
+    for (int j = 0; j<self.brokenArray.count; j++) {
+        NSArray* arr = self.brokenArray[j];
+        BrokenLine* brokenLine = [[BrokenLine alloc]init];
+        [brokenLine drawBrokenLine:arr andFrame:self.frame andMaxX:_MaxX andMaxY:_MaxY];
+    }
+}
+@end
+
+@implementation BrokenLine
+
+-(void)drawBrokenLine:(NSArray*)ptArr andFrame:(CGRect)lineFrame andMaxX:(CGFloat)maxX andMaxY:(CGFloat)maxY
+{
     CGContextRef context = UIGraphicsGetCurrentContext();
     //创建贝塞尔曲线对象
     UIBezierPath *currenPath = [UIBezierPath bezierPath];
     currenPath.lineCapStyle = kCGLineCapRound;//拐弯处为弧线
     currenPath.lineJoinStyle = kCGLineCapRound;
-    currenPath.lineWidth = 0.5f;
+    currenPath.lineWidth = 0.3f;
     UIColor *color = [UIColor blueColor];
     [color set];
     CGFloat lengths[] = {10,0};
     CGContextSetLineDash(context, 0, lengths,2);
     
-    for (int i = 0; i<self.pointArray.count; i++) {
-        NSValue* valueStart = self.pointArray[i];
+    for (int i = 0; i<ptArr.count; i++) {
+        NSValue* valueStart = ptArr[i];
         CGPoint pointStart = [valueStart CGPointValue];
-        CGPoint p = CGPointMake((pointStart.x/_MaxX)*(self.frame.size.width-2*defaultX), (pointStart.y/_MaxY)*(self.frame.size.height-2*defalutY));
+        CGPoint p = CGPointMake((pointStart.x/maxX)*(lineFrame.size.width-2*defaultX), (pointStart.y/maxY)*(lineFrame.size.height-2*defalutY));
         if (i == 0) {
-            [currenPath moveToPoint:CGPointMake(p.x+defaultX,self.frame.size.height-p.y-defalutY)];
+            [currenPath moveToPoint:CGPointMake(p.x+defaultX,lineFrame.size.height-p.y-defalutY)];
         }
         else
         {
             //把点加入到路径里面
-            [currenPath addLineToPoint:CGPointMake(p.x+defaultX,self.frame.size.height-p.y-defalutY)];
+            [currenPath addLineToPoint:CGPointMake(p.x+defaultX,lineFrame.size.height-p.y-defalutY)];
         }
     }
     //画线
     [currenPath stroke];
 }
+
 @end
