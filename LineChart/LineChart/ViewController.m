@@ -22,7 +22,7 @@
     lineGraphView.MaxX = 10.0f;
     lineGraphView.MaxY = 1.0f;
     lineGraphView.XYlineColor = [UIColor redColor];
-    lineGraphView.namePosition = LineNamePositionUpleft;
+    lineGraphView.namePosition = LineNamePositionUpRight;
     lineGraphView.layer.borderWidth = 1;
     [self.view addSubview:lineGraphView];
     
@@ -37,6 +37,12 @@
     bkLin1.lineName = @"测试2";
     bkLin1.brokenArray = @[[NSValue valueWithCGPoint:CGPointMake(0, 0.65)],[NSValue valueWithCGPoint:CGPointMake(1.3, 0.25)],[NSValue valueWithCGPoint:CGPointMake(1.7, 0.45)],[NSValue valueWithCGPoint:CGPointMake(1.9, 0.75)],[NSValue valueWithCGPoint:CGPointMake(2.4, 0.25)],[NSValue valueWithCGPoint:CGPointMake(3.3, 0.39)],[NSValue valueWithCGPoint:CGPointMake(3.9, 0.25)]];
     [lineGraphView addBrokenLine:bkLin1];
+    
+    BrokenLine* bkLin2 = [BrokenLine new];
+    bkLin2.lineColor = [UIColor redColor];
+    bkLin2.lineName = @"测试3";
+    bkLin2.brokenArray = @[[NSValue valueWithCGPoint:CGPointMake(0, 0.45)],[NSValue valueWithCGPoint:CGPointMake(1.3, 0.15)],[NSValue valueWithCGPoint:CGPointMake(1.7, 0.35)],[NSValue valueWithCGPoint:CGPointMake(1.9, 0.65)],[NSValue valueWithCGPoint:CGPointMake(2.4, 0.15)],[NSValue valueWithCGPoint:CGPointMake(3.3, 0.69)],[NSValue valueWithCGPoint:CGPointMake(3.9, 0.75)]];
+    [lineGraphView addBrokenLine:bkLin2];
     // Do any additional setup after loading the view, typically from a nib.
 }
 

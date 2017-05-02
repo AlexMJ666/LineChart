@@ -101,7 +101,7 @@
                 nameView.frame = CGRectMake(defaultX+NameWidth*i, 0, NameWidth, defalutY);
                 break;
             case LineNamePositionUpRight:
-                nameView.frame = CGRectMake(defaultX+NameWidth*i, 0, NameWidth, defalutY);
+                nameView.frame = CGRectMake(self.frame.size.width - defaultX - NameWidth*(self.totalBrokenArray.count - i), 0, NameWidth, defalutY);
                 break;
             case LineNamePositionCenter:
                 nameView.frame = CGRectMake(defaultX+NameWidth*i, 0, NameWidth, defalutY);
@@ -150,8 +150,6 @@
     currenPath.lineCapStyle = kCGLineCapRound;//拐弯处为弧线
     currenPath.lineJoinStyle = kCGLineCapRound;
     currenPath.lineWidth = 0.3f;
-    UIColor *color = bkLin.lineColor;
-    [color set];
     CGFloat lengths[] = {10,0};
     CGContextSetLineDash(context, 0, lengths,2);
     
@@ -167,8 +165,7 @@
             [currenPath addLineToPoint:CGPointMake(pointStart.x,pointStart.y)];
         }
     }
-    //画线
-    [currenPath stroke];
+    [self lineAnimation:currenPath andBrokenLine:bkLin];
 }
 
 -(void)addBrokenLine:(BrokenLine*)bkLin
@@ -184,6 +181,25 @@
     }
     return _totalBrokenArray;
 }
+
+-(void)lineAnimation:(UIBezierPath*)currenPath andBrokenLine:(BrokenLine*)bkLin
+{
+    //画线
+    CAShapeLayer* lineLayer = [CAShapeLayer layer];
+    lineLayer.path = currenPath.CGPath;
+    lineLayer.strokeColor = bkLin.lineColor.CGColor;
+    lineLayer.fillColor = [UIColor clearColor].CGColor;
+    
+    CABasicAnimation * anima = [CABasicAnimation animationWithKeyPath:NSStringFromSelector(@selector(strokeEnd))];
+    anima.fromValue = @0;
+    anima.toValue = @1;
+    anima.duration = 1;
+    anima.removedOnCompletion = NO;
+    anima.fillMode = kCAFillModeForwards;
+    [lineLayer addAnimation:anima forKey:NSStringFromSelector(@selector(strokeEnd))];
+    [self.layer addSublayer:lineLayer];
+}
+
 @end
 
 @implementation BrokenLine
