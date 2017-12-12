@@ -193,7 +193,7 @@
     CABasicAnimation * anima = [CABasicAnimation animationWithKeyPath:NSStringFromSelector(@selector(strokeEnd))];
     anima.fromValue = @0;
     anima.toValue = @1;
-    anima.duration = 1;
+    anima.duration = 10;
     anima.removedOnCompletion = NO;
     anima.fillMode = kCAFillModeForwards;
     [lineLayer addAnimation:anima forKey:NSStringFromSelector(@selector(strokeEnd))];
